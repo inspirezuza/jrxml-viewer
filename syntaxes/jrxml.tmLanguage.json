@@ -1,0 +1,19 @@
+{
+  "name": "JRXML",
+  "scopeName": "source.jrxml",
+  "patterns": [
+    { "include": "text.xml" },
+    {
+      "match": "\\$(F|P|V|R)\\{[^}]+\\}",
+      "name": "variable.other.jrxml"
+    },
+    {
+      "match": "\\b(TODAY|NOW|SUM|MIN|MAX|IF|ROUND|FORMAT)\\b",
+      "name": "support.function.jrxml"
+    },
+    {
+      "match": "\\b(String|Integer|Long|Double|BigDecimal|Date|Boolean|Object)\\b",
+      "name": "storage.type.jrxml"
+    }
+  ]
+}

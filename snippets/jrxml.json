@@ -1,0 +1,31 @@
+{
+  "JRXML report": {
+    "prefix": "jr-report",
+    "body": [
+      "<jasperReport xmlns=\"http://jasperreports.sourceforge.net/jasperreports\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd\" name=\"${1:report}\" pageWidth=\"${2:595}\" pageHeight=\"${3:842}\" columnWidth=\"${4:555}\" leftMargin=\"${5:20}\" rightMargin=\"${6:20}\" topMargin=\"${7:20}\" bottomMargin=\"${8:20}\">",
+      "  $0",
+      "</jasperReport>"
+    ],
+    "description": "Create a JasperReports JRXML root"
+  },
+  "JRXML static text": {
+    "prefix": "jr-static",
+    "body": [
+      "<staticText>",
+      "  <reportElement x=\"${1:0}\" y=\"${2:0}\" width=\"${3:100}\" height=\"${4:20}\"/>",
+      "  <text><![CDATA[${5:Text}]]></text>",
+      "</staticText>$0"
+    ],
+    "description": "Create a staticText element"
+  },
+  "JRXML text field": {
+    "prefix": "jr-field",
+    "body": [
+      "<textField>",
+      "  <reportElement x=\"${1:0}\" y=\"${2:0}\" width=\"${3:100}\" height=\"${4:20}\"/>",
+      "  <textFieldExpression><![CDATA[${5:\\$F{field}}]]></textFieldExpression>",
+      "</textField>$0"
+    ],
+    "description": "Create a textField element"
+  }
+}

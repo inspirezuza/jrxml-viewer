@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="sample" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+  <parameter name="title" class="java.lang.String"/>
+  <field name="customerName" class="java.lang.String"/>
+  <variable name="total" class="java.math.BigDecimal" calculation="Sum">
+    <variableExpression><![CDATA[$F{amount}]]></variableExpression>
+  </variable>
+  <style name="HeaderStyle" isBold="true" forecolor="#123456"/>
+  <title>
+    <band height="50">
+      <staticText>
+        <reportElement x="10" y="10" width="300" height="24" style="HeaderStyle"/>
+        <text><![CDATA[Customer Report]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="320" y="10" width="200" height="24"/>
+        <textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+  <detail>
+    <band height="25">
+      <textField isStretchWithOverflow="true">
+        <reportElement x="10" y="0" width="240" height="20"/>
+        <textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+      </textField>
+      <rectangle>
+        <reportElement x="260" y="0" width="100" height="20"/>
+      </rectangle>
+    </band>
+  </detail>
+</jasperReport>

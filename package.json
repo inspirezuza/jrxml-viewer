@@ -1,0 +1,166 @@
+{
+  "name": "jrxml-viewer",
+  "displayName": "JRXML Viewer",
+  "description": "A source-backed visual viewer and editor for JasperReports JRXML files.",
+  "version": "0.1.0",
+  "publisher": "jrxml-viewer-community",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inspirezuza/jrxml-viewer"
+  },
+  "bugs": {
+    "url": "https://github.com/inspirezuza/jrxml-viewer/issues"
+  },
+  "homepage": "https://github.com/inspirezuza/jrxml-viewer#readme",
+  "engines": {
+    "vscode": "^1.125.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "jrxml",
+    "jasperreports",
+    "report",
+    "viewer",
+    "visual editor"
+  ],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "compile": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "check-types": "tsc --noEmit",
+    "lint": "npm run check-types",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "node test/runTest.js",
+    "package": "npm run compile && vsce package --no-dependencies",
+    "ci": "npm run check-types && npm test && npm run package"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "@types/vscode": "^1.125.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "jrxml",
+        "aliases": ["JRXML", "JasperReports XML"],
+        "extensions": [".jrxml"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "jrxml",
+        "scopeName": "source.jrxml",
+        "path": "./syntaxes/jrxml.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "jrxml",
+        "path": "./snippets/jrxml.json"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "jrxml.viewer",
+        "displayName": "JRXML Viewer",
+        "selector": [{ "filenamePattern": "*.jrxml" }],
+        "priority": "default"
+      }
+    ],
+    "commands": [
+      { "command": "jrxmlViewer.openPreview", "title": "JRXML: Open Preview", "icon": "$(open-preview)" },
+      { "command": "jrxmlViewer.openSource", "title": "JRXML: Open Source", "icon": "$(code)" },
+      { "command": "jrxmlViewer.validate", "title": "JRXML: Validate", "icon": "$(check)" },
+      { "command": "jrxmlViewer.refreshExplorer", "title": "JRXML: Refresh Explorer", "icon": "$(refresh)" },
+      { "command": "jrxmlViewer.revealElement", "title": "JRXML: Reveal Element", "icon": "$(go-to-file)" },
+      { "command": "jrxmlViewer.exportHtml", "title": "JRXML: Export Static HTML", "icon": "$(export)" },
+      { "command": "jrxmlViewer.exportSvg", "title": "JRXML: Export SVG", "icon": "$(file-media)" },
+      { "command": "jrxmlViewer.runtimePreview", "title": "JRXML: Preview with JasperReports Runtime", "icon": "$(play)" }
+    ],
+    "menus": {
+      "editor/title": [
+        { "command": "jrxmlViewer.openSource", "when": "resourceLangId == jrxml", "group": "navigation@1" },
+        { "command": "jrxmlViewer.validate", "when": "resourceLangId == jrxml", "group": "navigation@2" }
+      ],
+      "explorer/context": [
+        { "command": "jrxmlViewer.openPreview", "when": "resourceExtname == .jrxml", "group": "navigation@1" },
+        { "command": "jrxmlViewer.openSource", "when": "resourceExtname == .jrxml", "group": "navigation@2" }
+      ],
+      "view/title": [
+        { "command": "jrxmlViewer.refreshExplorer", "when": "view == jrxml.files", "group": "navigation" }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "jrxml-viewer",
+          "title": "JRXML",
+          "icon": "./media/jrxml.svg"
+        }
+      ]
+    },
+    "views": {
+      "jrxml-viewer": [
+        {
+          "id": "jrxml.files",
+          "name": "Reports",
+          "contextualTitle": "JRXML Reports"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "JRXML Viewer",
+      "properties": {
+        "jrxmlViewer.defaultView": {
+          "type": "string",
+          "enum": ["preview", "source"],
+          "enumDescriptions": ["Open JRXML files in the visual viewer.", "Open JRXML files in the XML editor."],
+          "default": "preview",
+          "description": "The default view when opening a JRXML file."
+        },
+        "jrxmlViewer.gridSize": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 5,
+          "description": "Grid size in report units."
+        },
+        "jrxmlViewer.showGrid": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the design grid in the JRXML viewer."
+        },
+        "jrxmlViewer.resolveLocalResources": {
+          "type": "boolean",
+          "default": true,
+          "description": "Resolve local images, subreports and templates referenced by a report."
+        },
+        "jrxmlViewer.runtime.command": {
+          "type": "string",
+          "default": "",
+          "description": "Optional local JasperReports runner command. Leave empty to use static design preview only."
+        },
+        "jrxmlViewer.runtime.args": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Arguments for the optional JasperReports runner. Supported placeholders: {input}, {output}, {format}."
+        }
+      }
+    }
+  }
+}

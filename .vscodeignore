@@ -1,0 +1,13 @@
+.vscode/
+.github/
+.vscode-test/
+.smoke-extensions/
+src/
+test/
+runtime/
+node_modules/
+*.map
+*.ts
+esbuild.mjs
+tsconfig.json
+vitest.config.*

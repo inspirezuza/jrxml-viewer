@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.vsix
+.vscode-test/
+.smoke-extensions/
+.idea/
+.DS_Store
+runtime/target/
+test/tmp/
