@@ -89,7 +89,7 @@ public final class Runner {
     private static void exportXlsx(JasperPrint print, Path output) throws JRException {
         JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setExporterInput(new SimpleExporterInput(print));
-        exporter.setExporterOutput(new SimpleWriterExporterOutput(output.toFile()));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(output.toFile()));
         exporter.setConfiguration(new SimpleXlsxExporterConfiguration());
         exporter.exportReport();
     }
@@ -97,7 +97,7 @@ public final class Runner {
     private static void exportCsv(JasperPrint print, Path output) throws JRException {
         JRCsvExporter exporter = new JRCsvExporter();
         exporter.setExporterInput(new SimpleExporterInput(print));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(output.toFile()));
+        exporter.setExporterOutput(new SimpleWriterExporterOutput(output.toFile()));
         exporter.setConfiguration(new SimpleCsvExporterConfiguration());
         exporter.exportReport();
     }
