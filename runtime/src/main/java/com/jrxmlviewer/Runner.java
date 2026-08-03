@@ -12,12 +12,13 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRXlsxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.export.SimpleCsvExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsxExporterConfiguration;
 
 import java.io.IOException;
@@ -60,13 +61,15 @@ public final class Runner {
         if (data.isBlank()) return new JREmptyDataSource();
         Path path = Path.of(data);
         if (data.toLowerCase().endsWith(".json")) {
-            List<Map<String, Object>> rows = new ObjectMapper().readValue(Files.readString(path), new TypeReference<>() {});
+            List<Map<String, Object>> decoded = new ObjectMapper().readValue(Files.readString(path), new TypeReference<>() {});
+            List<Map<String, ?>> rows = new ArrayList<>();
+            rows.addAll(decoded);
             return new JRMapCollectionDataSource(rows);
         }
         List<String> lines = Files.readAllLines(path);
         if (lines.isEmpty()) return new JREmptyDataSource();
         String[] headers = lines.get(0).split(",", -1);
-        List<Map<String, Object>> rows = new ArrayList<>();
+        List<Map<String, ?>> rows = new ArrayList<>();
         for (int line = 1; line < lines.size(); line++) {
             String[] values = lines.get(line).split(",", -1);
             Map<String, Object> row = new HashMap<>();
@@ -86,7 +89,7 @@ public final class Runner {
     private static void exportXlsx(JasperPrint print, Path output) throws JRException {
         JRXlsxExporter exporter = new JRXlsxExporter();
         exporter.setExporterInput(new SimpleExporterInput(print));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(output.toFile()));
+        exporter.setExporterOutput(new SimpleWriterExporterOutput(output.toFile()));
         exporter.setConfiguration(new SimpleXlsxExporterConfiguration());
         exporter.exportReport();
     }
