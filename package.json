@@ -3,7 +3,7 @@
   "displayName": "JRXML Viewer",
   "description": "A source-backed visual viewer and editor for JasperReports JRXML files.",
   "version": "0.1.0",
-  "publisher": "jrxml-viewer-community",
+  "publisher": "inspirezuza",
   "license": "MIT",
   "repository": {
     "type": "git",
